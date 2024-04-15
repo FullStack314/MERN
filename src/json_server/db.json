@@ -3,17 +3,32 @@
     {
       "id": "1",
       "content": "The decline has resulted in a 19 P/E ratio and a 4.35% dividend yield. Some analysts believe the bottom is in for UPS stock",
-      "important": true
+      "important": false
     },
     {
       "id": "2",
       "content": "MSFT has been giving out dividends and growing them for 19 consecutive years.",
-      "important": false
+      "important": true
     },
     {
       "id": "3",
       "content": "As conflicted as our judgements might be about Israel’s conduct of its war in Gaza, there should be no ambiguity about our condemnation of Iran’s attack on Israel",
-      "important": true
+      "important": false
+    },
+    {
+      "id": "f554",
+      "content": "a new note..1",
+      "important": false
+    },
+    {
+      "id": "e81b",
+      "content": "a new note..aaa",
+      "important": false
+    },
+    {
+      "id": "200c",
+      "content": "c",
+      "important": false
     }
   ]
 }

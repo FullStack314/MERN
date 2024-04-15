@@ -2,33 +2,21 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 import './css/App.css'
-import Note from './components/Note'
-import Logo from './components/Logo'
-import noteService from './components/communication'
+import Note from '../components/Note'
+import Logo from '../components/Logo'
 
 const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote]=useState('a new note..')
   const [showAll, setShowAll] = useState(true)
 
-  const toggleImportanceOf = id => {
-    const url = `http://localhost:3001/notes/${id}`
-    const note = notes.find(n => n.id === id)
-    const changedNote = { ...note, important: !note.important }
- 
-    noteService.update(id, changeNote)
-               .then(response => {
-                 setNotes(notes.map(n => n.id !== id ? n : response.data))
-               })
-  }
-
   const hook = () => {
     console.log('effect')
-    noteService.getAll()
-               .then(response => {
-                  console.log('promised fulfileeeed')
-                  setNotes(response.data)
-              })
+    axios.get('http://localhost:3001/notes')
+         .then(response => {
+            console.log('promised fulfileeeed')
+            setNotes(response.data)
+         })
   }
 
   useEffect(hook, []) 
@@ -39,15 +27,12 @@ const App = () => {
     const noteObject = {
       content: newNote,
       important: Math.random()<0.5,
+      id: notes.length + 1
     }
 
-    noteService
-      .create(noteObject)
-      .then(response => {
-        setNotes(notes.concat(response.data))
-        setNewNote('')
-      })
-}
+    setNotes(notes.concat(noteObject))
+    setNewNote('')
+  }
 
   const handleNoteChange = ()=>{
     console.log(event.target.value)
@@ -67,10 +52,7 @@ const App = () => {
       <div className="card">
         <ul>
           {notesToShow.map(note1 =>
-            <Note  key={note1.id} 
-                  note={note1} 
-                  toggleImportance={() => toggleImportanceOf(note1.id)}
-                  />)            // <li key={note1.id}> {note1.content} </li>). key is explicit para.
+            <Note  key={note1.id} note={note1} />)            // <li key={note1.id}> {note1.content} </li>). key is explicit para.
           }  
         </ul>
       </div>
