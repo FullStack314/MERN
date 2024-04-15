@@ -1,31 +1,56 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/src/assets/vite.svg'
 import './css/App.css'
 import Note from './components/Note'
+import Logo from './components/Logo'
 
 
-const App = ({notes}) => {
+const App = (props) => {
+  const [notes, setNotes] = useState(props.notes)
+  const [newNote, setNewNote]=useState('a new note..')
+  const [showAll, setShowAll] = useState(true)
+
+  const addNote = (event) => {
+    event.preventDefault()
+    console.log('button clicked', event.target)
+    const noteObject = {
+      content: newNote,
+      important: Math.random()<0.5,
+      id: notes.length + 1
+    }
+
+    setNotes(notes.concat(noteObject))
+    setNewNote('')
+  }
+
+  const handleNoteChange = ()=>{
+    console.log(event.target.value)
+    setNewNote(event.target.value)
+  }
+
+  const notesToShow = showAll ? notes : notes.filter(note=> note.important === true)
+
   return (
     <>
+      <Logo />
       <div>
-        <a href="#" target="_blank"><img src={viteLogo} className="logo" alt="Vite logo" /></a>
-        <a href="#" target="_blank"><img src={reactLogo} className="logo react" alt="React logo" /></a>
+        <button onClick={()=> setShowAll(!showAll)}>
+          show {showAll?'important':'all'}
+        </button>
       </div>
-      <h1>Notes</h1>
-      
       <div className="card">
         <ul>
-          {/* <li>{notes[0].content}</li>
-          <li>{notes[1].content}</li>
-          <li>{notes[2].content}</li> */}
-          {notes.map(note1 => 
-            // <li key={note1.id}> {note1.content} </li>)
-            <Note  key={note1.id} note={note1} />)
+          {notesToShow.map(note1 =>
+            <Note  key={note1.id} note={note1} />)            // <li key={note1.id}> {note1.content} </li>). key is explicit para.
           }  
         </ul>
       </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+
+      <form onSubmit={addNote}>
+          <input value={newNote}
+              onChange = {handleNoteChange}
+          />
+          <button type="submit">save</button>
+      </form>
     </>
   )
 }
